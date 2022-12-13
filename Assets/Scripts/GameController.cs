@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -46,5 +47,13 @@ public class GameController : MonoBehaviour
     {
         Time.timeScale = defaultTimeScale;
         Time.fixedDeltaTime = defaultFixedDeltaTime;
+    }
+
+    public int GetScore() { return score; }
+
+    public void GameOver()
+    {
+        //Destroy(GameObject.FindGameObjectWithTag("Player"));
+        SceneManager.LoadScene(2);
     }
 }

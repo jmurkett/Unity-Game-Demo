@@ -914,7 +914,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &1472977380
 RectTransform:
@@ -1076,8 +1076,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aimingLinePrefab: {fileID: 1150099948272369202, guid: b654d738a8833ad48a82b0d2e9dec373, type: 3}
   shootingPowerText: {fileID: 785350469}
-  maxShootingPower: 50
-  minShootingPower: 20
+  maxShootingPower: 600
+  minShootingPower: 50
   maxLineLength: 3
 --- !u!1 &1736474276
 GameObject:
@@ -1592,3 +1592,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 4034191483109911196, guid: 2aeb971eb9a09c94a8286c35ebde1f79, type: 3}
   startingSpeed: 30
+  baseTimeUntilNextSpawn: 3

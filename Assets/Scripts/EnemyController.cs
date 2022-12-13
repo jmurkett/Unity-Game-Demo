@@ -9,13 +9,20 @@ public class EnemyController : MonoBehaviour
 
     [SerializeField] private float startingSpeed;
 
+    [SerializeField] float baseTimeUntilNextSpawn;
+    private float timeUntilNextSpawn;
+
+    private GameController gameController;
+
     private void Awake()
     {
         enemies = new List<Enemy>();
+        timeUntilNextSpawn = baseTimeUntilNextSpawn;
     }
 
     private void Start()
     {
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         SpawnEnemy();
     }
 
@@ -48,6 +55,13 @@ public class EnemyController : MonoBehaviour
         if (Input.GetKeyDown("space"))
         {
             SpawnEnemy();
+        }
+
+        timeUntilNextSpawn -= Time.deltaTime;
+        if (timeUntilNextSpawn < 0)
+        {
+            SpawnEnemy();
+            timeUntilNextSpawn = baseTimeUntilNextSpawn - gameController.GetScore() / 10;
         }
     }
 

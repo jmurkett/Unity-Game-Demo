@@ -15,10 +15,19 @@ public class Enemy : MonoBehaviour
     private EnemyController enemyController;
     private GameController gameController;
 
+    private CircleCollider2D circleCollider2D;
+
+    private bool enemyActivated = false;
+    [SerializeField] private float timeUntilActivated;
+
     private void Awake()
     {
-        enemyState = EnemyState.Vulnerable;
+        enemyState = EnemyState.Invulnerable;
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        circleCollider2D = GetComponent<CircleCollider2D>();
+        circleCollider2D.enabled = false;
+
         SetSpriteColor();
     }
 
@@ -26,6 +35,20 @@ public class Enemy : MonoBehaviour
     {
         enemyController = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>();
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+    }
+
+    private void Update()
+    {
+        if (!enemyActivated)
+        {
+            timeUntilActivated -= Time.deltaTime;
+            if (timeUntilActivated < 0)
+            {
+                enemyActivated = true;
+                circleCollider2D.enabled = true;
+                SetSpriteColor();
+            }
+        }
     }
 
     public void IterateState()
@@ -43,10 +66,14 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player" && enemyState== EnemyState.Vulnerable)
+        if (collision.gameObject.tag == "Player" && enemyState == EnemyState.Vulnerable)
         {
             gameController.IncreaseScore(1);
             enemyController.DestroyEnemy(this);
+        }
+        else if (collision.gameObject.tag == "Player" && enemyState == EnemyState.Invulnerable)
+        {
+            gameController.GameOver();
         }
     }
 
@@ -57,14 +84,23 @@ public class Enemy : MonoBehaviour
 
     private void SetSpriteColor()
     {
+        float opacity = 1;
+        if (!enemyActivated) 
+        { 
+            opacity = 0.5f;
+        }
+
+        Color spriteColor = Color.white;
         switch (enemyState)
         {
             case EnemyState.Vulnerable:
-                spriteRenderer.color = Color.blue;
+                spriteColor = Color.blue;
                 break;
             case EnemyState.Invulnerable:
-                spriteRenderer.color = Color.red;
+                spriteColor = Color.red;
                 break;
         }
+        spriteColor.a = opacity;
+        spriteRenderer.color = spriteColor;
     }
 }
