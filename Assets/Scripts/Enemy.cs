@@ -20,6 +20,8 @@ public class Enemy : MonoBehaviour
     private bool enemyActivated = false;
     [SerializeField] private float timeUntilActivated;
 
+    [SerializeField] private float startingSpeed;
+
     private void Awake()
     {
         enemyState = EnemyState.Invulnerable;
@@ -29,6 +31,8 @@ public class Enemy : MonoBehaviour
         circleCollider2D.enabled = false;
 
         SetSpriteColor();
+
+   
     }
 
     private void Start()
@@ -47,6 +51,11 @@ public class Enemy : MonoBehaviour
                 enemyActivated = true;
                 circleCollider2D.enabled = true;
                 SetSpriteColor();
+
+                // Give the enemy an initial force
+                Vector2 enemyStartingForce = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+                enemyStartingForce.Normalize();
+                gameObject.GetComponent<Rigidbody2D>().AddForce(startingSpeed * enemyStartingForce);
             }
         }
     }

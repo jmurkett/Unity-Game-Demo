@@ -7,8 +7,6 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     private List<Enemy> enemies;
 
-    [SerializeField] private float startingSpeed;
-
     [SerializeField] float baseTimeUntilNextSpawn;
     private float timeUntilNextSpawn;
 
@@ -41,11 +39,6 @@ public class EnemyController : MonoBehaviour
         } while (Physics2D.OverlapCircle(spawnPosition, 1, new ContactFilter2D().NoFilter(), collider2Ds) != 0);
 
         Enemy enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, transform).GetComponent<Enemy>();
-
-        // Give the enemy an initial force
-        Vector2 enemyStartingForce = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
-        enemyStartingForce.Normalize();
-        enemy.GetComponent<Rigidbody2D>().AddForce(startingSpeed * enemyStartingForce);
 
         enemies.Add(enemy);
     }
