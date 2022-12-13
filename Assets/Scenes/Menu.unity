@@ -531,8 +531,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -105.703735, y: -125.97971}
-  m_SizeDelta: {x: 820.4279, y: 346.3443}
+  m_AnchoredPosition: {x: -105.703735, y: 11.1974}
+  m_SizeDelta: {x: 820.4279, y: 620.6985}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1559447391
 MonoBehaviour:
@@ -554,7 +554,22 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Play
+  m_text: 'You will play as a ball with the objective of destroying as many enemy
+    balls as possible without getting yourself destroyed.
+
+
+    Collide with blue
+    balls to destroy them and increase your score. Collide with red balls and you
+    will be destroyed and the game will be over. Each time you shoot your ball, the
+    enemy balls will switch colour.
+
+
+    Control the ball by clicking and dragging
+    to set the direction and power of the ball. Then release the mouse button to
+    fire.
+
+
+    Click anywhere to start!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

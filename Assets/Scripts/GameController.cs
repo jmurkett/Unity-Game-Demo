@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     private int score = 0;
-    //private GameObject canvas;
     [SerializeField] private TextMeshProUGUI scoreText;
 
     private float defaultTimeScale;
@@ -22,7 +21,6 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        //canvas = GameObject.FindGameObjectWithTag("UI");
         UpdateScoreUI();
     }
 
@@ -53,7 +51,6 @@ public class GameController : MonoBehaviour
 
     public void GameOver()
     {
-        //Destroy(GameObject.FindGameObjectWithTag("Player"));
         SceneManager.LoadScene(2);
     }
 }

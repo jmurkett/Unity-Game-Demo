@@ -23,10 +23,17 @@ public class PlayerMovement : MonoBehaviour
     private EnemyController enemyController;
     private GameController gameController;
 
+    private SpriteRenderer spriteRenderer;
+
+    private bool canShoot = true;
+
 
     private void Awake()
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        SetColor();
     }
 
     private void Start()
@@ -44,49 +51,55 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        // The player starts aiming
-        if (Input.GetMouseButtonDown(0))
+        if (canShoot)
         {
-            mouseStartPosition = GetWorldCoordinate(Input.mousePosition);
-            aimingLineRenderer.positionCount = 2;
-            enemyController.IterateEnemyStates();
-            gameController.StartSlowMotion();
-
-            shootingPowerTransform.position = new Vector3(transform.position.x + 0.6f, transform.position.y, 0);
-            shootingPowerText.GetComponent<TextMeshProUGUI>().SetText(GetAimingPower().ToString("0.00"));
-            shootingPowerText.SetActive(true);
-        }
-        // The player stops aiming and fires
-        else if (Input.GetMouseButtonUp(0))
-        {
-            mouseEndPosition = GetWorldCoordinate(Input.mousePosition);
-            float shootingPower = Mathf.Lerp(minShootingPower, maxShootingPower, GetAimingPower());
-
-            MovePlayer(mouseStartPosition - mouseEndPosition, shootingPower);
-            aimingLineRenderer.positionCount = 0;
-            gameController.StopSlowMotion();
-
-            shootingPowerText.SetActive(false);
-        }
-        // The player continues aiming
-        else if (aimingLineRenderer.positionCount == 2)
-        {
-            Vector2 lineStart = transform.position;
-            Vector2 lineEnd = GetWorldCoordinate(Input.mousePosition) - mouseStartPosition + transform.position;
-            Vector2 lineDirection = (lineStart - lineEnd);
-            Vector2 lineDirectionNormalized = lineDirection.normalized;
-            aimingLineRenderer.SetPosition(0, lineStart - lineDirectionNormalized);
-
-            if (lineDirection.magnitude > maxLineLength)
+            // The player starts aiming
+            if (Input.GetMouseButtonDown(0))
             {
-                lineEnd = lineStart - lineDirectionNormalized * maxLineLength;
-            }
-            
-            aimingLineRenderer.SetPosition(1, lineEnd - lineDirectionNormalized);
+                mouseStartPosition = GetWorldCoordinate(Input.mousePosition);
+                aimingLineRenderer.positionCount = 2;
+                enemyController.IterateEnemyStates();
+                gameController.StartSlowMotion();
 
-            shootingPowerText.GetComponent<TextMeshProUGUI>().SetText(GetAimingPower().ToString("0.00"));
-            shootingPowerTransform.position = new Vector3(transform.position.x + 0.6f, transform.position.y, 0);
+                shootingPowerTransform.position = new Vector3(transform.position.x + 0.6f, transform.position.y, 0);
+                shootingPowerText.GetComponent<TextMeshProUGUI>().SetText(GetAimingPower().ToString("0.00"));
+                shootingPowerText.SetActive(true);
+            }
+            // The player stops aiming and fires
+            else if (Input.GetMouseButtonUp(0))
+            {
+                mouseEndPosition = GetWorldCoordinate(Input.mousePosition);
+                float shootingPower = Mathf.Lerp(minShootingPower, maxShootingPower, GetAimingPower());
+
+                MovePlayer(mouseStartPosition - mouseEndPosition, shootingPower);
+                aimingLineRenderer.positionCount = 0;
+                gameController.StopSlowMotion();
+
+                shootingPowerText.SetActive(false);
+
+                canShoot = false;
+            }
+            // The player continues aiming
+            else if (aimingLineRenderer.positionCount == 2)
+            {
+                Vector2 lineStart = transform.position;
+                Vector2 lineEnd = GetWorldCoordinate(Input.mousePosition) - mouseStartPosition + transform.position;
+                Vector2 lineDirection = (lineStart - lineEnd);
+                Vector2 lineDirectionNormalized = lineDirection.normalized;
+                aimingLineRenderer.SetPosition(0, lineStart - lineDirectionNormalized);
+
+                if (lineDirection.magnitude > maxLineLength)
+                {
+                    lineEnd = lineStart - lineDirectionNormalized * maxLineLength;
+                }
+
+                aimingLineRenderer.SetPosition(1, lineEnd - lineDirectionNormalized);
+
+                shootingPowerText.GetComponent<TextMeshProUGUI>().SetText(GetAimingPower().ToString("0.00"));
+                shootingPowerTransform.position = new Vector3(transform.position.x + 0.6f, transform.position.y, 0);
+            }
         }
+        SetColor();
     }
 
     private void MovePlayer(Vector2 direction, float power)
@@ -107,5 +120,25 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 line = mouseStartPosition - GetWorldCoordinate(Input.mousePosition);
         return Mathf.Min(line.magnitude / maxLineLength, 1);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            canShoot = true;
+        }
+    }
+
+    private void SetColor()
+    {
+        float opacity = 1.0f;
+        if (!canShoot)
+        {
+            opacity = 0.5f;
+        }
+        Color spriteColor = Color.green;
+        spriteColor.a = opacity;
+        spriteRenderer.color = spriteColor;
     }
 }
