@@ -7,7 +7,8 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     private List<Enemy> enemies;
 
-    [SerializeField] float baseTimeUntilNextSpawn;
+    [SerializeField] private float baseTimeUntilNextSpawn;
+    [SerializeField] private float minimumTimeUntilNextSpawn;
     private float timeUntilNextSpawn;
 
     private GameController gameController;
@@ -55,7 +56,8 @@ public class EnemyController : MonoBehaviour
         {
             SpawnEnemy();
             // The time until next spawn decreases as the player's score increases
-            timeUntilNextSpawn = baseTimeUntilNextSpawn - gameController.GetScore() / 10;
+            // But the time cannot be less than the minimum time until next spawn
+            timeUntilNextSpawn = Mathf.Max(baseTimeUntilNextSpawn - gameController.GetScore() / 10, minimumTimeUntilNextSpawn);
         }
     }
 

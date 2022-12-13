@@ -25,8 +25,8 @@ public class Enemy : MonoBehaviour
 
     private void Awake()
     {
-        // Initial enemy state is invulnerable
-        enemyState = EnemyState.Invulnerable;
+        // Initial enemy state is vulernable
+        enemyState = EnemyState.Vulnerable;
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         circleCollider2D = GetComponent<CircleCollider2D>();
@@ -78,7 +78,8 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && enemyState == EnemyState.Vulnerable)
         {
-            gameController.IncreaseScore(1);
+            gameController.IncreaseScore(2);
+            enemyController.IterateEnemyStates();
             enemyController.DestroyEnemy(this);
         }
         else if (collision.gameObject.CompareTag("Player") && enemyState == EnemyState.Invulnerable)

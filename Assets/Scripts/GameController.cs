@@ -32,6 +32,12 @@ public class GameController : MonoBehaviour
         UpdateScoreUI();
     }
 
+    public void DecreaseScore(int amount)
+    {
+        score -= amount;
+        UpdateScoreUI();
+    }
+
     private void UpdateScoreUI()
     {
         scoreText.SetText("Score: " + score.ToString());

@@ -560,7 +560,7 @@ MonoBehaviour:
 
     Collide with blue
     balls to destroy them and increase your score. Collide with red balls and you
-    will be destroyed and the game will be over. Each time you shoot your ball, the
+    will be destroyed and the game will be over. Each time you destroy a ball, the
     enemy balls will switch colour.
 
 

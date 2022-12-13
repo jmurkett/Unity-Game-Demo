@@ -48,7 +48,6 @@ public class PlayerMovement : MonoBehaviour
         {
             mouseStartPosition = GetWorldCoordinate(Input.mousePosition);
             aimingLineRenderer.positionCount = 2;
-            enemyController.IterateEnemyStates();
             gameController.StartSlowMotion();
 
             shootingPowerTransform.position = new Vector3(transform.position.x + 0.6f, transform.position.y, 0);
@@ -64,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
             MovePlayer(mouseStartPosition - mouseEndPosition, shootingPower);
             aimingLineRenderer.positionCount = 0;
             gameController.StopSlowMotion();
+            gameController.DecreaseScore(1);
 
             shootingPowerText.SetActive(false);
         }
