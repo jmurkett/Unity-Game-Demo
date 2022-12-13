@@ -7,9 +7,6 @@ public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D rigidBody2D;
 
-    private Vector3 mouseStartPosition;
-    private Vector3 mouseEndPosition;
-
     [SerializeField] private GameObject aimingLinePrefab;
     private LineRenderer aimingLineRenderer;
 
@@ -19,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maxShootingPower;
     [SerializeField] private float minShootingPower;
     [SerializeField] private float maxLineLength;
+    private Vector3 mouseStartPosition;
+    private Vector3 mouseEndPosition;
 
     private EnemyController enemyController;
     private GameController gameController;
@@ -77,6 +76,7 @@ public class PlayerMovement : MonoBehaviour
             Vector2 lineDirectionNormalized = lineDirection.normalized;
             aimingLineRenderer.SetPosition(0, lineStart - lineDirectionNormalized);
 
+            // Ensure that line does not exceed the max length
             if (lineDirection.magnitude > maxLineLength)
             {
                 lineEnd = lineStart - lineDirectionNormalized * maxLineLength;
@@ -84,6 +84,7 @@ public class PlayerMovement : MonoBehaviour
 
             aimingLineRenderer.SetPosition(1, lineEnd - lineDirectionNormalized);
 
+            // Display the current shooting power from 0 to 1 on the ball
             shootingPowerText.GetComponent<TextMeshProUGUI>().SetText(GetAimingPower().ToString("0.00"));
             shootingPowerTransform.position = new Vector3(transform.position.x + 0.6f, transform.position.y, 0);
         }

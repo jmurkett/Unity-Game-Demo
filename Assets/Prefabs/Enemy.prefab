@@ -137,4 +137,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeUntilActivated: 3
-  startingSpeed: 50
+  startingSpeed: 100

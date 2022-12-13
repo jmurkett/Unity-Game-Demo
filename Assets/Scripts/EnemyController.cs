@@ -54,6 +54,7 @@ public class EnemyController : MonoBehaviour
         if (timeUntilNextSpawn < 0)
         {
             SpawnEnemy();
+            // The time until next spawn decreases as the player's score increases
             timeUntilNextSpawn = baseTimeUntilNextSpawn - gameController.GetScore() / 10;
         }
     }

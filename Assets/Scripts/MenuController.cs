@@ -8,6 +8,7 @@ public class MenuController : MonoBehaviour
     private bool mouseDown = false;
     private void Update()
     {
+        // Start the game once the mouse has been pressed and released
         if (Input.GetMouseButtonDown(0))
         {
             mouseDown = true;

@@ -6,24 +6,26 @@ public class Enemy : MonoBehaviour
 {
     public enum EnemyState
     {
-        Vulnerable,
-        Invulnerable
+        Vulnerable, // Enemy will be destroyed if collided with
+        Invulnerable // Player will be destroyed if collided with
     }
 
     private EnemyState enemyState;
+
     private SpriteRenderer spriteRenderer;
     private EnemyController enemyController;
     private GameController gameController;
-
     private CircleCollider2D circleCollider2D;
 
     private bool enemyActivated = false;
     [SerializeField] private float timeUntilActivated;
 
+    // The intial speed of the enemy when it is activated
     [SerializeField] private float startingSpeed;
 
     private void Awake()
     {
+        // Initial enemy state is invulnerable
         enemyState = EnemyState.Invulnerable;
         spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -31,8 +33,6 @@ public class Enemy : MonoBehaviour
         circleCollider2D.enabled = false;
 
         SetSpriteColor();
-
-   
     }
 
     private void Start()
@@ -46,6 +46,7 @@ public class Enemy : MonoBehaviour
         if (!enemyActivated)
         {
             timeUntilActivated -= Time.deltaTime;
+            // Check if the enemy has become activate yet
             if (timeUntilActivated < 0)
             {
                 enemyActivated = true;
@@ -75,12 +76,12 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player" && enemyState == EnemyState.Vulnerable)
+        if (collision.gameObject.CompareTag("Player") && enemyState == EnemyState.Vulnerable)
         {
             gameController.IncreaseScore(1);
             enemyController.DestroyEnemy(this);
         }
-        else if (collision.gameObject.tag == "Player" && enemyState == EnemyState.Invulnerable)
+        else if (collision.gameObject.CompareTag("Player") && enemyState == EnemyState.Invulnerable)
         {
             gameController.GameOver();
         }
@@ -93,6 +94,7 @@ public class Enemy : MonoBehaviour
 
     private void SetSpriteColor()
     {
+        // If the enemy is not activated yet then reduce the opacity
         float opacity = 1;
         if (!enemyActivated) 
         { 
